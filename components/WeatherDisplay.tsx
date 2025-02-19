@@ -3,7 +3,8 @@
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getWeatherData } from "../lib/weather";
-// import { getWeatherDataByPostcode } from "../lib/weather";
+import { getWeatherDataByPostcode } from "../lib/weather";
+import ShareButton from "./ShareButton";
 
 type WeatherData = {
   location: string;
@@ -49,7 +50,10 @@ export default function WeatherDisplay() {
 
   return (
     <div className="mt-4">
-      <h2 className="text-2xl font-semibold mb-2">{weatherData.location}</h2>
+      <div className="flex justify-between items-start mb-4">
+        <h2 className="text-2xl font-semibold mb-2">{weatherData.location}</h2>
+        <ShareButton />
+      </div>
       <p className="text-4xl font-bold mb-2">{weatherData.temperature}°C</p>
       <p className="text-lg">{weatherData.description}</p>
       <div className="mt-4 grid grid-cols-2 gap-4">
