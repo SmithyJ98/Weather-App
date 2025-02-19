@@ -3,6 +3,7 @@
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getWeatherData } from "../lib/weather";
+import { getWeatherDataByPostcode } from "../lib/weather";
 
 type WeatherData = {
   location: string;
@@ -20,7 +21,7 @@ export default function WeatherDisplay() {
 
   useEffect(() => {
     if (location) {
-      getWeatherData(location)
+      getWeatherDataByPostcode(location)
         .then((data) => setWeatherData(data))
         .catch((err) => setError(err));
     }
