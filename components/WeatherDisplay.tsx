@@ -3,6 +3,7 @@
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getWeatherData } from "../lib/weather";
+import { getWeatherDataByPostcode } from "../lib/weather";
 import ShareButton from "./ShareButton";
 
 type WeatherData = {
