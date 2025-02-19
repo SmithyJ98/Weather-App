@@ -21,7 +21,7 @@ export default function WeatherDisplay() {
 
   useEffect(() => {
     if (location) {
-      getWeatherDataByPostcode(location)
+      getWeatherData(location)
         .then((data) => setWeatherData(data))
         .catch((err) => setError(err));
     }
