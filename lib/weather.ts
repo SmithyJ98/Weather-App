@@ -1,10 +1,4 @@
-type WeatherData = {
-  location: string;
-  temperature: number;
-  description: string;
-  humidity: number;
-  windSpeed: number;
-};
+import { WeatherData } from "@/types/alltypes";
 
 export async function getWeatherData(location: string): Promise<WeatherData> {
   try {
