@@ -2,7 +2,8 @@
 
  import React, { useState, FunctionComponent } from "react"
  import { Share2 } from "lucide-react"
-
+ import { ButtonProps } from "@/types/alltypes";
+ 
 // export default function ShareButton() {
 //   const [copied, setCopied] = useState(false)
 
@@ -27,9 +28,7 @@
 //   )
 // }
 
-interface ButtonProps {
-    text?: string;
-  }
+
   
   const ShareButton: FunctionComponent<ButtonProps> = () => {
     const [copied, setCopied] = useState<boolean>(false);

@@ -5,14 +5,7 @@ import { useEffect, useState } from "react";
 import { getWeatherData } from "../lib/weather";
 import { getWeatherDataByPostcode } from "../lib/weather";
 import ShareButton from "./ShareButton";
-
-type WeatherData = {
-  location: string;
-  temperature: number;
-  description: string;
-  humidity: number;
-  windSpeed: number;
-};
+import { WeatherData } from "@/types/alltypes";
 
 export default function WeatherDisplay() {
   const searchParams = useSearchParams();

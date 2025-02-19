@@ -3,14 +3,8 @@
 import type React from "react"
 import { useRef, useEffect } from "react"
 import { useTheme } from "next-themes"
+import { ParticlesProps } from "@/types/alltypes"
 
-export interface ParticlesProps extends React.HTMLAttributes<HTMLDivElement> {
-  quantity?: number
-  staticity?: number
-  ease?: number
-  refresh?: boolean
-  color?: string // Add color prop
-}
 export function Particles({
   quantity = 30,
   staticity = 50,
