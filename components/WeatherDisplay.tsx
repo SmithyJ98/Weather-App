@@ -3,7 +3,7 @@
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getWeatherData } from "../lib/weather";
-import { getWeatherDataByPostcode } from "../lib/weather";
+// import { getWeatherDataByPostcode } from "../lib/weather";
 
 type WeatherData = {
   location: string;
