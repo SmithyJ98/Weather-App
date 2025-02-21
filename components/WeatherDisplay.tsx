@@ -2,7 +2,7 @@
 
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { getWeatherData } from "../lib/weather";
+import { getWeather } from "../lib/weather";
 import ShareButton from "./ShareButton";
 import { WeatherData } from "@/types/alltypes";
 
@@ -14,7 +14,7 @@ export default function WeatherDisplay() {
 
   useEffect(() => {
     if (location) {
-      getWeatherData(location)
+      getWeather(location)
         .then((data) => setWeatherData(data))
         .catch((err) => setError(err));
     }

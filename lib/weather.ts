@@ -48,6 +48,59 @@ export async function getWeatherData(location: string): Promise<WeatherData> {
   }
 }
 
+export async function getWeatherDataByPostcode(postcode: string): Promise<WeatherData> {
+  try {
+    const postcodeResponse = await fetch(`https://api.postcodes.io/postcodes/${encodeURIComponent(postcode)}`);
+
+    if (!postcodeResponse.ok) {
+      throw new Error("Postcode API request failed");
+    }
+
+    const postcodeData = await postcodeResponse.json();
+
+    if (!postcodeData.result) {
+      throw new Error("Postcode not found");
+    }
+
+    const { latitude, longitude } = postcodeData.result;
+
+    const weatherResponse = await fetch(
+      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&hourly=temperature_2m,relativehumidity_2m,windspeed_10m`
+    );
+
+    if (!weatherResponse.ok) {
+      throw new Error("Weather API request failed");
+    }
+
+    const weatherData = await weatherResponse.json();
+
+    const currentWeather = weatherData.current_weather;
+    const currentHourIndex = new Date(currentWeather.time).getHours();
+
+    return {
+      location: postcode,
+      temperature: Math.round(currentWeather.temperature),
+      description: getWeatherDescription(currentWeather.weathercode),
+      humidity: Math.round(
+        weatherData.hourly.relativehumidity_2m[currentHourIndex]
+      ),
+      windSpeed: Math.round(currentWeather.windspeed),
+    };
+  } catch (error) {
+    console.error("Error fetching weather data:", error);
+    throw error;
+  }
+}
+
+export async function getWeather(locationOrPostcode: string): Promise<WeatherData> {
+  const isPostcode = /\d/.test(locationOrPostcode);
+  if (isPostcode) {
+    return getWeatherDataByPostcode(locationOrPostcode);
+  } else {
+    return getWeatherData(locationOrPostcode);
+  }
+}
+
 function getWeatherDescription(weatherCode: number): string {
   const weatherDescriptions: { [key: number]: string } = {
     0: "Clear sky",
