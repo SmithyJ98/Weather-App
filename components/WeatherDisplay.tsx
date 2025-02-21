@@ -3,7 +3,6 @@
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getWeatherData } from "../lib/weather";
-import { getWeatherDataByPostcode } from "../lib/weather";
 import ShareButton from "./ShareButton";
 import { WeatherData } from "@/types/alltypes";
 
@@ -23,7 +22,7 @@ export default function WeatherDisplay() {
 
   if (!location) {
     return (
-      <p className="text-gray-500 mt-4">
+      <p className="text-gray-500 mt-4 text-center">
         Enter a location to see weather information.
       </p>
     );
@@ -31,8 +30,8 @@ export default function WeatherDisplay() {
 
   if (error) {
     return (
-      <p className="text-red-500 mt-4">
-        Unable to fetch weather data. Please try again.
+      <p className="text-red-500 mt-4 text-center">
+        Unable to fetch weather data. Please check the spelling of your input or the location provided may not be covered.
       </p>
     );
   }

@@ -48,51 +48,6 @@ export async function getWeatherData(location: string): Promise<WeatherData> {
   }
 }
 
-export async function getWeatherDataByPostcode(
-  postcode: string
-): Promise<WeatherData> {
-  try {
-    const geocodingResponse = await fetch(
-      `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(
-        postcode
-      )}&count=1&language=en&format=json`
-    );
-    if (!geocodingResponse.ok) {
-      throw new Error("Geocoding API request failed");
-    }
-    const geocodingData = await geocodingResponse.json();
-    if (!geocodingData.results || geocodingData.results.length === 0) {
-      throw new Error("Location not found");
-    }
-
-    const { latitude, longitude, name } = geocodingData.results[0];
-    const weatherResponse = await fetch(
-      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&hourly=temperature_2m,relativehumidity_2m,windspeed_10m`
-    );
-
-    if (!weatherResponse.ok) {
-      throw new Error("Weather API request failed");
-    }
-
-    const weatherData = await weatherResponse.json();
-    const currentWeather = weatherData.current_weather;
-    const currentHourIndex = new Date(currentWeather.time).getHours();
-
-    return {
-      location: name,
-      temperature: Math.round(currentWeather.temperature),
-      description: getWeatherDescription(currentWeather.weathercode),
-      humidity: Math.round(
-        weatherData.hourly.relativehumidity_2m[currentHourIndex]
-      ),
-      windSpeed: Math.round(currentWeather.windspeed),
-    };
-  } catch (error) {
-    console.error("Error fetching weather data by postcode: ", error);
-    throw error;
-  }
-}
-
 function getWeatherDescription(weatherCode: number): string {
   const weatherDescriptions: { [key: number]: string } = {
     0: "Clear sky",

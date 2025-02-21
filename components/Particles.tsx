@@ -22,6 +22,7 @@ export function Particles({
   const canvasSize = useRef<{ w: number; h: number }>({ w: 0, h: 0 })
   const dpr = typeof window !== "undefined" ? window.devicePixelRatio : 1
   const { theme } = useTheme()
+
   useEffect(() => {
     if (canvasRef.current) {
       context.current = canvasRef.current.getContext("2d")
@@ -29,17 +30,27 @@ export function Particles({
     initCanvas()
     animate()
     window.addEventListener("resize", initCanvas)
+    window.addEventListener("mousemove", handleMouseMove)
     return () => {
       window.removeEventListener("resize", initCanvas)
+      window.removeEventListener("mousemove", handleMouseMove)
     }
   }, [])
+
   useEffect(() => {
     initCanvas()
   }, []) // Removed unnecessary refresh dependency
+
+  const handleMouseMove = (event: MouseEvent) => {
+    mouse.current.x = event.clientX
+    mouse.current.y = event.clientY
+  }
+
   const initCanvas = () => {
     resizeCanvas()
     drawParticles()
   }
+
   const resizeCanvas = () => {
     if (canvasContainerRef.current && canvasRef.current && context.current) {
       circles.current.length = 0
@@ -52,6 +63,7 @@ export function Particles({
       context.current.scale(dpr, dpr)
     }
   }
+
   const circleParams = (): any => {
     const x = Math.floor(Math.random() * canvasSize.current.w)
     const y = Math.floor(Math.random() * canvasSize.current.h)
@@ -76,26 +88,28 @@ export function Particles({
       magnetism,
     }
   }
+
   const drawCircle = (circle: any, update = false) => {
     if (context.current) {
       const { x, y, translateX, translateY, size, alpha } = circle
       context.current.translate(translateX, translateY)
       context.current.beginPath()
       context.current.arc(x, y, size, 0, 2 * Math.PI)
-    //   context.current.fillStyle = `rgba(${theme === "dark" ? "255, 255, 255" : "0, 0, 0"}, ${alpha})`
-    context.current.fillStyle = color ? `rgba(${color}, ${alpha})` : `rgba(255, 255, 255, ${alpha})`; // Default to white
-    context.current.fill()
+      context.current.fillStyle = color ? `rgba(${color}, ${alpha})` : `rgba(255, 255, 255, ${alpha})` // Default to white
+      context.current.fill()
       context.current.setTransform(dpr, 0, 0, dpr, 0, 0)
       if (!update) {
         circles.current.push(circle)
       }
     }
   }
+
   const clearContext = () => {
     if (context.current) {
       context.current.clearRect(0, 0, canvasSize.current.w, canvasSize.current.h)
     }
   }
+
   const drawParticles = () => {
     clearContext()
     const particleCount = quantity
@@ -104,10 +118,12 @@ export function Particles({
       drawCircle(circle)
     }
   }
+
   const remapValue = (value: number, start1: number, end1: number, start2: number, end2: number): number => {
     const remapped = ((value - start1) * (end2 - start2)) / (end1 - start1) + start2
     return remapped > 0 ? remapped : 0
   }
+
   const animate = () => {
     clearContext()
     circles.current.forEach((circle: any, i: number) => {
@@ -161,6 +177,7 @@ export function Particles({
     })
     window.requestAnimationFrame(animate)
   }
+
   return (
     <div className={className} ref={canvasContainerRef} {...props}>
       <canvas ref={canvasRef} />
