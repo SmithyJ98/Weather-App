@@ -1,15 +1,16 @@
+/* eslint-disable @typescript-eslint/no-explicit-any, react-hooks/exhaustive-deps */
+
 "use client"
 
 import type React from "react"
 import { useRef, useEffect } from "react"
-import { useTheme } from "next-themes"
 import { ParticlesProps } from "@/types/alltypes"
 
 export function Particles({
   quantity = 30,
   staticity = 50,
   ease = 50,
-  refresh = false,
+  // refresh = false,
   color = "255, 255, 255",
   className = "",
   ...props
@@ -21,7 +22,6 @@ export function Particles({
   const mouse = useRef<{ x: number; y: number }>({ x: 0, y: 0 })
   const canvasSize = useRef<{ w: number; h: number }>({ w: 0, h: 0 })
   const dpr = typeof window !== "undefined" ? window.devicePixelRatio : 1
-  const { theme } = useTheme()
 
   useEffect(() => {
     if (canvasRef.current) {
