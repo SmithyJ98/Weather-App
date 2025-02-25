@@ -6,12 +6,9 @@ import { Particles } from "@/components/Particles";
 
 export type Location = Promise<{ location: string }>;
 
-export default function Home(
- // searchParams: { location?: Location };
- ) {
+export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-24 relative overflow-hidden">
-      {/* Darker overlay for better particle visibility */}
       <div className="absolute inset-0 bg-black/80 z-0" />
       
       <Particles 
